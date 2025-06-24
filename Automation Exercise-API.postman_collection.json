@@ -1,0 +1,462 @@
+{
+	"info": {
+		"_postman_id": "47693627-d34c-4b26-a2e0-b3c6be59739e",
+		"name": "Automation Exercise-API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43391279",
+		"_collection_link": "https://galactic-star-6368804.postman.co/workspace/%C4%B0ntizar-G%C3%BCzel%C3%A7ay's-Workspace~abaa37db-98c1-4db9-85d6-a741df55ec04/collection/43391279-47693627-d34c-4b26-a2e0-b3c6be59739e?action=share&source=collection_link&creator=43391279"
+	},
+	"item": [
+		{
+			"name": "Get All Products Link",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Test1: Response status code and basic structure\r",
+							"pm.test(\"Status Code and Product listing successful\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"\r",
+							"    //Convert response to JSON object\r",
+							"    const jsonData = pm.response.json();\r",
+							"\r",
+							"    //Check that the JSON object contains the keys 'responseCode' and 'products'\r",
+							"    pm.expect(jsonData).to.have.all.keys(\"responseCode\",\"products\");\r",
+							"\r",
+							"    //Check that responseCode value is 200\r",
+							"    pm.expect(jsonData.responseCode).to.equal(200);\r",
+							"})\r",
+							"\r",
+							"//Test2:Chech that the Products array is not empty and taht each products has the expected results\r",
+							"pm.test(\"Products array is not empty and contains expected data\", function () {\r",
+							"    //Convert response to JSON object\r",
+							"    const jsonData = pm.response.json();\r",
+							"    const products = jsonData.products;\r",
+							"\r",
+							"    //Check the products array is not empty\r",
+							"    pm.expect(products).to.be.an(\"array\").and.to.have.lengthOf.at.least(1);\r",
+							"\r",
+							"    //Check that the first product has the expected keys\r",
+							"    pm.expect(products[0]).to.have.all.keys(\"id\",\"name\",\"price\",\"brand\",\"category\");\r",
+							"})\r",
+							"\r",
+							"//test3:Check that all products are os a certain category or user type\r",
+							"pm.test(\"All products are of a certain category or user type\", function () {\r",
+							"    //Convert response to JSON object\r",
+							"    const jsonData = pm.response.json();\r",
+							"    const products = jsonData.products;\r",
+							"\r",
+							"    //Create a loop for each products\r",
+							"    products.forEach(product => {\r",
+							"    //Check that the 'category' field of each product is an object\r",
+							"    pm.expect(product.category).to.be.an(\"object\");\r",
+							"\r",
+							"    //Chech that the 'usertype' and 'category' fields are present in the 'category' object\r",
+							"    pm.expect(product.category).to.have.all.keys(\"usertype\",\"category\");\r",
+							"\r",
+							"    //Check it category field is a string\r",
+							"    pm.expect(product.category.category).to.be.a(\"string\");    \r",
+							"});\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://automationexercise.com/api/productsList",
+					"protocol": "https",
+					"host": [
+						"automationexercise",
+						"com"
+					],
+					"path": [
+						"api",
+						"productsList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post to All Products Link",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Test1: Response status code and basic structure\r",
+							"pm.test(\"Status Code and Product listing successful\", function(){\r",
+							"    pm.response.to.have.status(405);\r",
+							"    })\r",
+							"\r",
+							"//Test2: Check if the response body contains the expected message\r",
+							"    //Convert response to JSON object\r",
+							"    const jsonData = pm.response.json(); \r",
+							"    \r",
+							"pm.test(\"Response body contains the expected message\", function () {\r",
+							"    pm.expect(jsonData.message).to.eql(\"This request method is not supported.\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://automationexercise.com/api/productsList",
+					"protocol": "https",
+					"host": [
+						"automationexercise",
+						"com"
+					],
+					"path": [
+						"api",
+						"productsList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Brand List",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Test1: Check Response status code \r",
+							"pm.test(\"Status Code and brand listing successful\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"//Test2:Check brand list content \r",
+							"responseData = pm.response.json();\r",
+							"pm.test(\"'brands' array exists and is not empty \",function(){\r",
+							"    pm.expect(responseData.brands).to.be.an(\"array\");\r",
+							"    pm.expect(responseData.brands).to.have.length.above(0);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"All brand object have 'id' and 'brand' properties\",function(){\r",
+							"    responseData.brands.forEach(brandItem => {\r",
+							"        pm.expect(brandItem).to.have.property('id').and.to.be.a('number');\r",
+							"        pm.expect(brandItem).to.have.property('brand').and.to.be.a('string');\r",
+							"    })\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://automationexercise.com/api/brandsList",
+					"protocol": "https",
+					"host": [
+						"automationexercise",
+						"com"
+					],
+					"path": [
+						"api",
+						"brandsList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post to Search Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Test1: Check Response status code \r",
+							"pm.test(\"Status Code and brand listing successful\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"//Test2: Check if the response body contains the expected message\r",
+							"    //Convert response to JSON object\r",
+							"    const jsonData = pm.response.json(); \r",
+							"    \r",
+							"pm.test(\"Response body contains the expected message\", function () {\r",
+							"    pm.expect(jsonData.message).to.eql( \"Bad request, search_product parameter is missing in POST request.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://automationexercise.com/api/searchProduct?search-product=\"top\"",
+					"protocol": "https",
+					"host": [
+						"automationexercise",
+						"com"
+					],
+					"path": [
+						"api",
+						"searchProduct"
+					],
+					"query": [
+						{
+							"key": "search-product",
+							"value": "\"top\"",
+							"description": "\"top\""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post the Verify Login with valid details",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://automationexercise.com/api/verifyLogin?email=&password=",
+					"protocol": "https",
+					"host": [
+						"automationexercise",
+						"com"
+					],
+					"path": [
+						"api",
+						"verifyLogin"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": ""
+						},
+						{
+							"key": "password",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User Account",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://automationexercise.com/api/deleteAccount?email=gzlcayintizar@gmail.com&password=1234",
+					"protocol": "https",
+					"host": [
+						"automationexercise",
+						"com"
+					],
+					"path": [
+						"api",
+						"deleteAccount"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "gzlcayintizar@gmail.com"
+						},
+						{
+							"key": "password",
+							"value": "1234"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User Account",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://automationexercise.com/api/updateAccount?name=İnto&email=punto&password=1234&title =mrs.&birth_date=20.11.2000&company=ttt&adress1=newyork&country=USA&zipcode=3456&mobile_number=7234567890*",
+					"protocol": "https",
+					"host": [
+						"automationexercise",
+						"com"
+					],
+					"path": [
+						"api",
+						"updateAccount"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "İnto"
+						},
+						{
+							"key": "email",
+							"value": "punto"
+						},
+						{
+							"key": "password",
+							"value": "1234"
+						},
+						{
+							"key": "title ",
+							"value": "mrs."
+						},
+						{
+							"key": "birth_date",
+							"value": "20.11.2000"
+						},
+						{
+							"key": "birth_month",
+							"value": "11",
+							"disabled": true
+						},
+						{
+							"key": "birth_year",
+							"value": "2000",
+							"disabled": true
+						},
+						{
+							"key": "firstname",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "lastname",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "company",
+							"value": "ttt"
+						},
+						{
+							"key": "adress1",
+							"value": "newyork"
+						},
+						{
+							"key": "adress2",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "country",
+							"value": "USA"
+						},
+						{
+							"key": "zipcode",
+							"value": "3456"
+						},
+						{
+							"key": "state",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "city",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "mobile_number",
+							"value": "7234567890*"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
